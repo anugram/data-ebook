@@ -82,9 +82,9 @@ public byte[] generateAESKey() throws Exception {
 * **Requirement 6:** Avoid vulnerabilities by using only supported algorithms and libraries (e.g., ensure Java version is up-to-date).
 * **Avoid Deprecated Algorithms:** Do not use DES, 3DES (except in limited legacy cases), or RSA with PKCS#1 v1.5 padding.
 
-<p align="left">
-  <a href="https://github.com/anugram/data-ebook/blob/main/chapters/01-securing-credit-card-java-crdp.md"><< Securing Credit Card Data in Java using CRDP</a>
-</p>
-<p align="right">
-  <a href="https://github.com/anugram/data-ebook/blob/main/chapters/102-javax-crypto-vs-crdp.md">Simplify this with CRDP APIs and CM Policies >></a>
-</p>
+## What's next
+With the above examples, it is evident that developer working with crypto in Java need to understand cryptography operations in details as well as keep the code and the keys updated to ensure future risks are covered. In the next section we will see how using policies on CipherTrust Manager and everaging CRDP APIs can offload this work.
+* [Simplify this with CRDP APIs and CM Policies](../chapters/102-javax-crypto-vs-crdp.md)
+
+## Revisit
+* [Securing Credit Card Data in Java using CRDP](../chapters/01-securing-credit-card-java-crdp.md)
