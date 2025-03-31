@@ -46,6 +46,12 @@ public byte[] encrypt(byte[] plaintext, byte[] key) throws Exception {
 }
 ```
 
+**Developer pain points:**
+- 🚫 Need to understand different ciphers and there meanings
+- 🚫 Need to select nonces and other params
+- 🚫 Algorithms can get deprecated and thus need to be continously updated. This would also mean regular security patches
+- 🚫 Sensitive data is processed at different places with different type of sensitive info requiring different ciphers
+
 #### Key Management
 * **Key Generation:** Use java.security.SecureRandom for random key and nonce generation.
 * **Key Storage:** Store keys in a secure keystore (e.g., Java KeyStore - JKS or PKCS12) or a Hardware Security Module (HSM) for PCI compliance.
@@ -63,6 +69,11 @@ public byte[] generateAESKey() throws Exception {
     return keyGen.generateKey().getEncoded();
 }
 ```
+
+**Developer pain points:**
+- 🚫 Key generation locally
+- 🚫 Key can get compromised, so regular rotation is needed
+- 🚫 Multiple keys are employed for multiple data points
 
 #### PCI DSS Compliance Notes
 
