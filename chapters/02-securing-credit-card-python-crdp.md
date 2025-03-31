@@ -102,6 +102,39 @@ init_db_secure()
 store_payment_secure("John Doe", "4111111111111111", "12/25", 100.00)
 ```
 
+## Database Schema Comparison: Insecure vs. Secure Approach
+
+```diff
++------------------------+---------------------------------------+---------------------------------------+
+|                        | **Insecure Schema**                   | **Secure Schema**                     |
++------------------------+---------------------------------------+---------------------------------------+
+| **Card Number Field**  | `card_number TEXT`                    | `protected_pan TEXT`                 |
+|                        | 🚫 Stores raw Primary Account Number  | ✅ Stores tokenized/protected value   |
+|                        | 🔴 PCI DSS Violation                  | 🟢 PCI Compliant                      |
++------------------------+---------------------------------------+---------------------------------------+
+| **Expiry Date Field**  | `expiry TEXT`                         | `protected_expiry TEXT`               |
+|                        | 🚫 Raw expiration date                | ✅ Encrypted/tokenized value          |
+|                        | 🔴 Sensitive data exposure            | 🟢 Protected data                     |
++------------------------+---------------------------------------+---------------------------------------+
+| **CVV Handling**       | `cvv TEXT` (if stored)                | ❌ Not stored at all                  |
+|                        | 🔴 MAJOR PCI violation                | ✅ Properly discarded after auth      |
++------------------------+---------------------------------------+---------------------------------------+
+| **Backup Security**    | 🚫 Contains raw card data             | ✅ Only protected values              |
+|                        | 🔴 High breach risk                   | 🟢 Minimal exposure risk              |
++------------------------+---------------------------------------+---------------------------------------+
+| **Query Safety**       | 🚫 SELECT * exposes PANs              | ✅ No PANs in database                |
+|                        | 🔴 Accidental exposure likely         | 🟢 Impossible to leak raw data        |
++------------------------+---------------------------------------+---------------------------------------+
+| **Compliance Status**  | 🔴 Fails PCI Requirements 3.2, 3.4    | 🟢 Meets all PCI encryption standards |
++------------------------+---------------------------------------+---------------------------------------+
+
+Key to Symbols:
+✅ = Secure/Compliant
+🟢 = Positive security attribute
+🚫 = Security risk
+🔴 = Compliance violation
+❌ = Proper omission of sensitive data
+
 ## Key Benefits Comparison
 
 | Aspect                  | Plaintext Handling                        | CipherTrust API Protection                 |
