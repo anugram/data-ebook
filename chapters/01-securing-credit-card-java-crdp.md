@@ -311,3 +311,9 @@ public class CrdpApiClient {
     * If not successful, it prints an error and throws a custom CrdpApiException.
 6. **Error Handling:** Basic error handling for JSON processing, network issues (IOException), interruption (InterruptedException), and API errors (non-2xx status codes) is included.
 7. **main Method:** Provides a simple example of how to instantiate the client and call the protectData method.
+
+
+## What's next
+* [Protecting data using built in Javax Crypto library](../chapters/101-javax-crypto-examples.md)
+* [CRDP API vs. build in Javax Crypto library](../chapters/102-javax-crypto-vs-crdp.md)
+* [Portection and Access Policy definition on CipherTrust Manager](../chapters/201-policy-credit-cards-ciphertrust.md)
