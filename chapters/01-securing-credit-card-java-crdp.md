@@ -32,20 +32,21 @@ public class InsecurePaymentService {
     }
     // ... other methods
 }
+```
 
 ### Why This is Bad
 
-1.  **Direct PCI DSS Violations:**
-    * **Requirement 3 (Protect stored cardholder data):** Storing the full PAN (Primary Account Number) after authorization is generally prohibited unless essential for a specific business function, and even then, it *must* be rendered unreadable (e.g., using strong encryption, truncation, tokenization). Storing CVV after authorization is *never* allowed.
-    * **Requirement 6 (Develop and maintain secure systems and applications):** This approach likely violates secure coding guidelines.
-    * **Requirement 10 (Track and monitor all access):** Logging sensitive data like the full PAN makes logs highly sensitive and difficult to manage securely.
+**Direct PCI DSS Violations:**
+  **Requirement 3 (Protect stored cardholder data):** Storing the full PAN (Primary Account Number) after authorization is generally prohibited unless essential for a specific business function, and even then, it *must* be rendered unreadable (e.g., using strong encryption, truncation, tokenization). Storing CVV after authorization is *never* allowed.
+  **Requirement 6 (Develop and maintain secure systems and applications):** This approach likely violates secure coding guidelines.
+  **Requirement 10 (Track and monitor all access):** Logging sensitive data like the full PAN makes logs highly sensitive and difficult to manage securely.
 
-2.  **Increased PCI Scope:** Any system that stores, processes, or transmits cardholder data falls within the scope of a PCI DSS audit. This insecure approach dramatically increases the scope, complexity, and cost of achieving and maintaining compliance. Every component touching this data needs to be secured and audited.
+**Increased PCI Scope:** Any system that stores, processes, or transmits cardholder data falls within the scope of a PCI DSS audit. This insecure approach dramatically increases the scope, complexity, and cost of achieving and maintaining compliance. Every component touching this data needs to be secured and audited.
 
-3.  **Massive Security Risk:** If the application server or database is compromised, attackers gain direct access to raw credit card numbers. This leads to:
+**Massive Security Risk:** If the application server or database is compromised, attackers gain direct access to raw credit card numbers. This leads to:
     * Significant financial loss for customers.
     * Severe reputational damage to the business.
     * Large fines and legal liabilities.
     * Potential loss of the ability to process credit card payments.
 
-4.  **In-House Complexity:** Implementing and managing secure encryption, key management, and access controls correctly is extremely difficult and error-prone.
+**In-House Complexity:** Implementing and managing secure encryption, key management, and access controls correctly is extremely difficult and error-prone.
