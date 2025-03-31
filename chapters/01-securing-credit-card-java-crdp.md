@@ -59,7 +59,7 @@ Instead of handling raw sensitive data, the application can leverage CRDP to pro
 The core idea is to intercept the credit card data within the application, send it to CRDP for protection, and then store the resulting token (or encrypted data) instead of the original PAN.
 
 Here's how the application would call the CRDP API:
-```
+```bash
 # Example API Call to protect a credit card number
 
 curl <YOUR_CRDP_IP>:32082/v1/protect -X POST \
@@ -85,7 +85,7 @@ curl <YOUR_CRDP_IP>:32082/v1/protect -X POST \
 * **"data": "4929...":** The sensitive payload – the credit card number.
 
 **Revised Application Flow:**
-```
+```java
 // Secure approach using CRDP
 public class SecurePaymentService {
 
@@ -128,7 +128,7 @@ public class SecurePaymentService {
 By integrating CRDP via its API, the Java application transforms from a high-risk system struggling with PCI compliance into a more secure and compliant solution. It effectively outsources the most critical data security functions for handling credit card information, leading to reduced scope, lower risk, and simplified development.
 
 ### Annexure - Sample implementation of CrdpApiClient
-```
+```java
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
