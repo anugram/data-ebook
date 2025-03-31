@@ -315,5 +315,3 @@ public class CrdpApiClient {
 
 ## What's next
 * [Protecting data using built in Javax Crypto library](../chapters/101-javax-crypto-examples.md)
-* [CRDP API vs. build in Javax Crypto library](../chapters/102-javax-crypto-vs-crdp.md)
-* [Portection and Access Policy definition on CipherTrust Manager](../chapters/201-policy-credit-cards-ciphertrust.md)
