@@ -71,4 +71,5 @@ public byte[] generateAESKey() throws Exception {
 * **Requirement 6:** Avoid vulnerabilities by using only supported algorithms and libraries (e.g., ensure Java version is up-to-date).
 * **Avoid Deprecated Algorithms:** Do not use DES, 3DES (except in limited legacy cases), or RSA with PKCS#1 v1.5 padding.
 
-[<< Securing Credit Card Data in Java using CRDP](https://github.com/anugram/data-ebook/blob/main/chapters/01-securing-credit-card-java-crdp.md) | [Simplify this with CRDP APIs and CM Policies >>](https://github.com/anugram/data-ebook/blob/main/chapters/102-javax-crypto-vs-crdp.md)
+<style>[<< Securing Credit Card Data in Java using CRDP](https://github.com/anugram/data-ebook/blob/main/chapters/01-securing-credit-card-java-crdp.md) {text-align: left}</style>
+<style>[[Simplify this with CRDP APIs and CM Policies >>](https://github.com/anugram/data-ebook/blob/main/chapters/102-javax-crypto-vs-crdp.md) {text-align: right}</style>
