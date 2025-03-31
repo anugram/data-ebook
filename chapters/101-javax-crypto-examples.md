@@ -47,10 +47,10 @@ public byte[] encrypt(byte[] plaintext, byte[] key) throws Exception {
 ```
 
 **Developer pain points:**
-- 🚫 Need to understand different ciphers and there meanings
-- 🚫 Need to select nonces and other params
-- 🚫 Algorithms can get deprecated and thus need to be continously updated. This would also mean regular security patches
-- 🚫 Sensitive data is processed at different places with different type of sensitive info requiring different ciphers
+- 🚫 **Too many new concepts to learn:** Need to understand different ciphers, relevant parameters and there meanings
+- 🚫 **Things can get obsolete or just change:** Algorithms can get deprecated and thus need to be continously updated. This would also mean regular security patches
+- 🚫 **Sensitive assets sprawl:** Sensitive data is processed at different places with different type of sensitive info requiring different ciphers
+- 🚫 **Delayed CI/CD:** Frequent updates mean frequent releases and thus running CI/CD cycles everytime 
 
 #### Key Management
 * **Key Generation:** Use java.security.SecureRandom for random key and nonce generation.
