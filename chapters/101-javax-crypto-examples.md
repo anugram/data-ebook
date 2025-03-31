@@ -66,7 +66,9 @@ public byte[] generateAESKey() throws Exception {
 
 #### PCI DSS Compliance Notes
 
-**Requirement 3:** Protect stored cardholder data with encryption (AES-256 recommended).
-**Requirement 4:** Encrypt transmission of cardholder data over public networks (e.g., use TLS 1.3 with strong ciphers).
-**Requirement 6:** Avoid vulnerabilities by using only supported algorithms and libraries (e.g., ensure Java version is up-to-date).
-**Avoid Deprecated Algorithms:** Do not use DES, 3DES (except in limited legacy cases), or RSA with PKCS#1 v1.5 padding.
+* **Requirement 3:** Protect stored cardholder data with encryption (AES-256 recommended).
+* **Requirement 4:** Encrypt transmission of cardholder data over public networks (e.g., use TLS 1.3 with strong ciphers).
+* **Requirement 6:** Avoid vulnerabilities by using only supported algorithms and libraries (e.g., ensure Java version is up-to-date).
+* **Avoid Deprecated Algorithms:** Do not use DES, 3DES (except in limited legacy cases), or RSA with PKCS#1 v1.5 padding.
+
+[<< Securing Credit Card Data in Java using CRDP](https://github.com/anugram/data-ebook/blob/main/chapters/01-securing-credit-card-java-crdp.md) | [Simplify this with CRDP APIs and CM Policies >>](https://github.com/anugram/data-ebook/blob/main/chapters/102-javax-crypto-vs-crdp.md)
