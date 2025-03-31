@@ -5,64 +5,72 @@
 Consider a simple Python application that processes credit card information:
 
 ```python
-# DANGEROUS PRACTICE: Storing PCI data in plaintext
-credit_card_db = []
+### The Dangerous Way: Storing Raw PCI Data
+import sqlite3  # Using SQLite for example, but same risks apply to any DB
 
-def process_payment(name, card_number, expiry, cvv):
-    # Store all sensitive data in plaintext
-    credit_card_db.append({
-        'name': name,
-        'card_number': card_number,  # PCI-sensitive data
-        'expiry': expiry,            # PCI-sensitive data
-        'cvv': cvv                   # Highly sensitive!
-    })
+# Initialize DB (insecure approach)
+def init_db():
+    conn = sqlite3.connect('payments.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS payments
+                 (id INTEGER PRIMARY KEY, 
+                 name TEXT, 
+                 card_number TEXT,  # Storing raw PAN - PCI violation!
+                 expiry TEXT,       # Raw expiry - sensitive
+                 amount REAL)''')
+    conn.commit()
+    conn.close()
+
+# Store payment (insecure)
+def store_payment(name, card_number, expiry, amount):
+    conn = sqlite3.connect('payments.db')
+    c = conn.cursor()
     
-    # Process payment (imagine this connects to a payment gateway)
-    print(f"Processing payment for {card_number}")
+    # DIRECTLY STORING SENSITIVE DATA - PCI VIOLATION
+    c.execute("INSERT INTO payments (name, card_number, expiry, amount) VALUES (?, ?, ?, ?)",
+              (name, card_number, expiry, amount))
     
-    return "Payment processed"
+    conn.commit()
+    conn.close()
+    print(f"Stored payment for {name}")
 
 # Example usage
-process_payment(
-    "John Doe", 
-    "4111 1111 1111 1111", 
-    "12/25", 
-    "123"
-)
+init_db()
+store_payment("John Doe", "4111111111111111", "12/25", 100.00)
 ```
 
 **Why This Is Problematic:**
 
-1. **PCI DSS Non-Compliance:** Storing CVV violates PCI requirement 3.2
-2. **Data Breach Risk:** Plaintext data is vulnerable to:
-  * Database leaks
-  * Memory scraping attacks
-  * Insider threats
+1. The entire database becomes PCI-scoped
+2. Database backups contain sensitive data
+3. Any query returning these fields exposes PANs
+4. Violates PCI DSS Requirement 3.4 (render PAN unreadable)
 3. **Audit Complexity:** Every system handling this data falls under PCI scope
 4. **Key Management Burden:** If you add encryption later, you'll need to manage keys
 
 ## The Secure Way: Using CipherTrust RESTful Data Protection
 
 Here's how the same application looks when using your secure APIs:
-```
+```python
+import sqlite3
 import requests
 
 CIPHERTRUST_URL = "http://<IP>:32082/v1/protect"
 
-def process_payment_secure(name, card_number, expiry, cvv):
-    # Protect sensitive data before processing
-    protected_data = {
-        'card_number': protect_data(card_number, "protect-credit-card"),
-        'expiry': protect_data(expiry, "protect-credit-card"),
-        # CVV doesn't need storage per PCI rules - we process then discard
-    }
-    
-    # Process payment through your secure gateway
-    # (The actual card data is now safely tokenized/protected)
-    print(f"Processing payment for {protected_data['card_number']}")
-    
-    return "Payment securely processed"
+# Initialize DB (secure approach)
+def init_db_secure():
+    conn = sqlite3.connect('secure_payments.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS payments
+                 (id INTEGER PRIMARY KEY, 
+                 name TEXT, 
+                 protected_pan TEXT,  # Stores protected format
+                 protected_expiry TEXT, 
+                 amount REAL)''')
+    conn.commit()
+    conn.close()
 
+# Protect data via API
 def protect_data(data, policy_name):
     response = requests.post(
         CIPHERTRUST_URL,
@@ -73,13 +81,25 @@ def protect_data(data, policy_name):
     )
     return response.json()['protected_data']
 
+# Store payment (secure)
+def store_payment_secure(name, card_number, expiry, amount):
+    conn = sqlite3.connect('secure_payments.db')
+    c = conn.cursor()
+    
+    # PROTECT DATA BEFORE STORAGE
+    protected_pan = protect_data(card_number, "protect-credit-card")
+    protected_expiry = protect_data(expiry, "protect-expiry")
+    
+    c.execute("INSERT INTO payments (name, protected_pan, protected_expiry, amount) VALUES (?, ?, ?, ?)",
+              (name, protected_pan, protected_expiry, amount))
+    
+    conn.commit()
+    conn.close()
+    print(f"Stored SECURE payment for {name}")
+
 # Example usage
-process_payment_secure(
-    "John Doe", 
-    "4111 1111 1111 1111", 
-    "12/25", 
-    "123"
-)
+init_db_secure()
+store_payment_secure("John Doe", "4111111111111111", "12/25", 100.00)
 ```
 
 ## Key Benefits Comparison
