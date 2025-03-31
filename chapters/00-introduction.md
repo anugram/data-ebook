@@ -13,8 +13,8 @@ This book explores real-world scenarios where traditional data handling methods 
 
 **Table of Contents:**
 
-* [Chapter 1: Securing Credit Card Data in a Java Application](./chapters/01-securing-credit-card-java.md)
-* [Chapter 2: Protecting Patient Medical Records](./chapters/02-protecting-patient-records-java.md)
+* [Chapter 1: Securing Credit Card Data in a Java Application](./chapters/01-securing-credit-card-java-crdp.md)
+* [Chapter 2: Protecting Patient Medical Records](./chapters/02-protecting-patient-records-java-crdp.md)
 
 **Contributing:**
 
