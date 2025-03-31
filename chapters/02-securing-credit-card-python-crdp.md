@@ -120,12 +120,12 @@ store_payment_secure("John Doe", "4111111111111111", "12/25", 100.00)
 |                        | 🔴 Accidental exposure likely         | 🟢 Impossible to leak raw data        |
 | **Compliance Status**  | 🔴 Fails PCI Requirements 3.2, 3.4    | 🟢 Meets all PCI encryption standards |
 
-Key to Symbols:
-✅ = Secure/Compliant
-🟢 = Positive security attribute
-🚫 = Security risk
-🔴 = Compliance violation
-❌ = Proper omission of sensitive data
+### Key to Symbols:
+- ✅ = Secure/Compliant
+- 🟢 = Positive security attribute
+- 🚫 = Security risk
+- 🔴 = Compliance violation
+- ❌ = Proper omission of sensitive data
 
 ## Key Benefits Comparison
 
