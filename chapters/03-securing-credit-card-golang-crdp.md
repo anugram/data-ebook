@@ -68,10 +68,10 @@ func main() {
 
 **Security Issues:**
 
-🚫 Entire database in PCI DSS scope
-🚫 Backups contain sensitive cardholder data
-🚫 Violates PCI DSS Requirement 3.4 (render PAN unreadable)
-🚫 Memory may retain plaintext values
+- 🚫 Entire database in PCI DSS scope
+- 🚫 Backups contain sensitive cardholder data
+- 🚫 Violates PCI DSS Requirement 3.4 (render PAN unreadable)
+- 🚫 Memory may retain plaintext values
 
 ### 2. Secure Approach (Using CipherTrust API)
 
