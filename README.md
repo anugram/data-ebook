@@ -23,4 +23,4 @@ This is an open book! If you have suggestions, corrections, or ideas for new use
 
 **License:**
 
-This work is licensed under the [MIT License](./LICENSE.md).
+This work is licensed under the [MIT License](./LICENSE).
