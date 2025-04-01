@@ -76,3 +76,13 @@ Key rotation policy can be defined on CM and connectors like CipherTrust RESTful
 - Users in userset masked will see only last 4 digits in plaintext
 - Users in userset plaintext will see all digits in plaintext
 - All other users will see all digits in CipherText format
+
+# Role of developers with above configuration
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"protection_policy_name": "<protection_policy>","data": "<data>"}' <ip>:<port>/v1/protect
+```
+- **protection_policy:** name of the above protection policy that encapsulates all the crypto related details
+- **data:** data in plaintext that need to be protected
+- **ip:** IP address of the CRDP host
+- **port:** Port on which CRDP is listening
+- **/v1/protect:** PROTECT API endpoint 
