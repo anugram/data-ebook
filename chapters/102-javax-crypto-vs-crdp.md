@@ -7,12 +7,5 @@ Dynamic Data Masking is preferred when users with different access levels will b
 And best part is all of this is abstracted away in just two API calls i.e. PROTECT and REVEAL.
 
 ## Protection and Access policy in CipherTrust Manager
-Create Protection Policy
-```json
-{
-  "name": "Credit Card Sales",
-  "key": "aes_key",
-  "algorithm": "AES/CBC/PKCS5Padding",
-  "access_policy_name": "Credit Card Sales"
-}
-```
+Define policy on CipherTrust Manager as an [example here](https://github.com/anugram/data-ebook/blob/main/chapters/UC001-credit-card-protection.md).
+
