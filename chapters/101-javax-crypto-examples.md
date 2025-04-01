@@ -26,22 +26,33 @@ PCI DSS mandates the use of strong cryptography to protect sensitive cardholder 
 **Example Code (AES-GCM):**
 ```java
 import javax.crypto.Cipher;
-import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.Mac;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
-public byte[] encrypt(byte[] plaintext, byte[] key) throws Exception {
-    SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
-    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-    byte[] nonce = new byte[12]; // 96-bit nonce
-    new SecureRandom().nextBytes(nonce);
-    GCMParameterSpec spec = new GCMParameterSpec(128, nonce); // 128-bit tag length
-    cipher.init(Cipher.ENCRYPT_MODE, keySpec, spec);
+public byte[] encrypt(byte[] plaintext, byte[] encryptionKey, byte[] hmacKey) throws Exception {
+    byte[] iv = new byte[16];
+    new SecureRandom().nextBytes(iv);
+
+    // AES-CBC Encryption
+    Cipher cipher = Cipher.getInstance(AES_CBC_PKCS5);
+    cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(encryptionKey, "AES"), new IvParameterSpec(iv));
     byte[] ciphertext = cipher.doFinal(plaintext);
-    // Prepend nonce to ciphertext for decryption later
-    byte[] result = new byte[nonce.length + ciphertext.length];
-    System.arraycopy(nonce, 0, result, 0, nonce.length);
-    System.arraycopy(ciphertext, 0, result, nonce.length, ciphertext.length);
+
+    // Compute HMAC-SHA256 of (IV + Ciphertext)
+    Mac hmac = Mac.getInstance(HMAC_SHA256);
+    hmac.init(new SecretKeySpec(hmacKey, HMAC_SHA256));
+    hmac.update(iv);
+    byte[] hmacDigest = hmac.doFinal(ciphertext);
+
+    // Combine IV + Ciphertext + HMAC
+    byte[] result = new byte[iv.length + ciphertext.length + hmacDigest.length];
+    System.arraycopy(iv, 0, result, 0, iv.length);
+    System.arraycopy(ciphertext, 0, result, iv.length, ciphertext.length);
+    System.arraycopy(hmacDigest, 0, result, iv.length + ciphertext.length, hmacDigest.length);
+
     return result;
 }
 ```
