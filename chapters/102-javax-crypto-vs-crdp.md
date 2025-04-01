@@ -9,3 +9,39 @@ And best part is all of this is abstracted away in just two API calls i.e. PROTE
 ## Protection and Access policy in CipherTrust Manager
 Define policy on CipherTrust Manager as an [example here](https://github.com/anugram/data-ebook/blob/main/chapters/UC001-credit-card-protection.md).
 
+## Impact to development, QA, and OPs team
+### Replace complex crypto code to simple API calls
+As a developer, the code to maintain changes from 
+```java
+public byte[] encrypt(byte[] plaintext, byte[] encryptionKey, byte[] hmacKey) throws Exception {
+    byte[] iv = new byte[16];
+    new SecureRandom().nextBytes(iv);
+
+    // AES-CBC Encryption
+    Cipher cipher = Cipher.getInstance(AES_CBC_PKCS5);
+    cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(encryptionKey, "AES"), new IvParameterSpec(iv));
+    byte[] ciphertext = cipher.doFinal(plaintext);
+
+    // Compute HMAC-SHA256 of (IV + Ciphertext)
+    Mac hmac = Mac.getInstance(HMAC_SHA256);
+    hmac.init(new SecretKeySpec(hmacKey, HMAC_SHA256));
+    hmac.update(iv);
+    byte[] hmacDigest = hmac.doFinal(ciphertext);
+
+    // Combine IV + Ciphertext + HMAC
+    byte[] result = new byte[iv.length + ciphertext.length + hmacDigest.length];
+    return result;
+}
+```
+to a simple API call i.e.
+```java
+CrdpProtectRequest requestPayload = new CrdpProtectRequest(policyName, dataToProtect);
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create(CRDP_BASE_URL + PROTECT_ENDPOINT))
+    .timeout(Duration.ofSeconds(20))
+    .header("Content-Type", "application/json")
+    .header("Accept", "application/json")
+    .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody))
+    .build();
+HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+```
