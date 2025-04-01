@@ -34,6 +34,7 @@ Below are some of the commonly recommended techniques, algorithms, and parameter
   - **SHA-512** with **Per-User Salt** (unique random salt per entry)
   - **PBKDF2** (if hashing needs to be slow to prevent brute force)
     - Iterations: ≥ 100,000 (PCI-DSS recommends high computational cost)
+
 ⚠️ Do not use obsolete methods such as MD5 or SHA-1 (broken for security purposes).
 
 ## 5. Key Management (Critical for Encryption)
