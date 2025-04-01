@@ -11,8 +11,9 @@ Define policy on CipherTrust Manager as an [example here](https://github.com/anu
 
 ## Impact to development, QA, and OPs team
 ### Replace complex crypto code to simple API calls
-As a developer, the code to maintain changes from 
+As a developer, the **code to maintain reduces** from 
 ```java
+// Encrypt data
 public byte[] encrypt(byte[] plaintext, byte[] encryptionKey, byte[] hmacKey) throws Exception {
     byte[] iv = new byte[16];
     new SecureRandom().nextBytes(iv);
@@ -33,7 +34,16 @@ public byte[] encrypt(byte[] plaintext, byte[] encryptionKey, byte[] hmacKey) th
     return result;
 }
 ```
-to a simple API call i.e.
+```java
+// Key generation
+public byte[] generateAESKey() throws Exception {
+    KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+    SecureRandom random = new SecureRandom();
+    keyGen.init(256, random); // 256-bit key
+    return keyGen.generateKey().getEncoded();
+}
+```
+**to a simple API call** i.e.
 ```java
 CrdpProtectRequest requestPayload = new CrdpProtectRequest(policyName, dataToProtect);
 HttpRequest request = HttpRequest.newBuilder()
@@ -45,3 +55,21 @@ HttpRequest request = HttpRequest.newBuilder()
     .build();
 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 ```
+**Changes at high level**:
+| Without CRDP | With CRDP |
+|--------------|-----------|
+| Define crypto specifications | Crypto specifications abstarcted within Protection and Access Policy |
+| Define Crypto algo | Call PROTECT API |
+| Define IV | |
+| Define HMAC | |
+| Create and manage keys | |
+| Define data access and visibility rules | Call REVEAL API |
+
+### Subsequent updates
+What are the possible updates
+- Key need to be rotated
+- Key compromised and need to be replaced
+- Crypto algorithm is made obsolete
+
+Updates are required at every place keys are being generated or at every place data is being encrypted and decrypted
+In case of CRDP, the policy shall be updated on CipherTrust Manager and application code need not change.
